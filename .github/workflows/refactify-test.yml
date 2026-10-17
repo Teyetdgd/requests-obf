@@ -50,13 +50,12 @@ jobs:
 
     - name: 3. Download Refactify CLI from Releases
       env:
-        GH_TOKEN: ${{ secrets.REFACTIFY_ACTION_KEY }}
         REFACTIFY_VERSION: ${{ inputs.refactify_version }}
       run: |
         cd target-project
         echo "Downloading Refactify CLI release $REFACTIFY_VERSION..."
         # Use GitHub CLI to securely download from private repo and handle S3 redirects automatically
-        gh release download "$REFACTIFY_VERSION" --repo switlydev/refactor --pattern "*linux-amd64.tar.gz" --pattern "*checksums*"
+        gh release download "$REFACTIFY_VERSION" --repo "$GITHUB_REPOSITORY" --pattern "*linux-amd64.tar.gz" --pattern "*checksums*"
 
         # Verify the archive checksum BEFORE extracting anything: the runner
         # later executes this binary with write access to the repo.
